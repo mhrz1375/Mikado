@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_about_pearl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="ir.Mikado.AboutPearl"
+    tools:showIn="@layout/about_pearl_activity">
+
+    <WebView
+        android:id="@+id/webViewAboutPearl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderButtonRefreshAboutPearl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BlackShadow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/ic_portable_wifi_off_black_24dp" />
+
+        <Button
+            android:id="@+id/BtnRefreshAboutPearl"
+            style="@style/AppTheme.Button.Refresh"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="50dp"
+            android:text="@string/InternetErrorTitle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderProgressAboutPearl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="30dp"
+            android:text="@string/AdvertisementListLoader"
+            android:textAlignment="center"
+            android:textStyle="normal|bold" />
+
+        <ProgressBar
+            android:id="@+id/pbHeaderProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
+    </LinearLayout>
+</RelativeLayout>

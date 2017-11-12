@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_show_all_advertisement"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".CategoryList">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderButtonCategoryList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BlackShadow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/ic_portable_wifi_off_black_24dp" />
+
+        <Button
+            android:id="@+id/BtnRefreshCategoryList"
+            style="@style/AppTheme.Button.Refresh"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="50dp"
+            android:text="@string/InternetErrorTitle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderProgressCategoryList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="30dp"
+            android:text="@string/AdvertisementListLoader"
+            android:textAlignment="center"
+            android:textStyle="normal|bold" />
+
+        <ProgressBar
+            android:id="@+id/pbHeaderProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/ListViewCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="4dp" />
+
+
+</FrameLayout>

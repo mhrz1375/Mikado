@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Gray">#9dafba</color>
+    <color name="colorPrimary">#1c4372</color>
+    <color name="colorPrimaryDark">#0a243f</color>
+    <color name="colorAccent">#2981ec</color>
+    <color name="YellowLight">#e0dea2</color>
+    <color name="EditTextColor">#0058c2</color>
+    <color name="White">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="Black">#000000</color>
+    <color name="BlackShadow">#5f000000</color>
+    <color name="metal">#9dafba</color>
+    <color name="Background">#e0dea2</color>
+    <color name="Shadow">#6a3a3a3b</color>
+    <color name="BaseBackground">#edeabe</color>
+
+    <color name="GrayGlass">#249dafba</color>
+    <color name="GrayBlur">#93506673</color>
+
+    <array name="array_dot_active">
+        <item>@color/White</item>
+        <item>@color/White</item>
+        <item>@color/White</item>
+        <item>@color/White</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/Black</item>
+        <item>@color/Black</item>
+        <item>@color/Black</item>
+        <item>@color/Black</item>
+    </array>
+
+    <color name="black_overlay">#66000000</color>
+</resources>

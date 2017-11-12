@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:layout_marginTop="@dimen/app_bar_height_show_login"
+    android:orientation="vertical"
+    tools:context="ir.Mikado.ShowLogin"
+    tools:showIn="@layout/show_login_activity"
+
+    >
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_bar_height_show_login"
+        card_view:cardCornerRadius="5dp">
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/TitleUserAds"
+            android:textAlignment="center"
+            android:textColor="@color/Black"
+            android:textStyle="normal|bold" />
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderProgressUserAdvertisement"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="30dp"
+            android:text="@string/AdvertisementListLoader"
+            android:textAlignment="center"
+            android:textStyle="normal|bold" />
+
+        <ProgressBar
+            android:id="@+id/pbHeaderProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ProgressBar>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderButtonRefreshUserAdvertisement"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BlackShadow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/ic_portable_wifi_off_black_24dp" />
+
+        <Button
+            android:id="@+id/BtnRefreshUserAdvertisementList"
+            style="@style/AppTheme.Button.Refresh"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="50dp"
+            android:onClick="BtnRefresh"
+            android:text="@string/BtnRefresh" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeaderButtonUserNoAdvertisement"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BlackShadow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/ic_event_busy_black_24dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="شما تا کنون آگهی ارسال نکرده اید!"
+            android:textAlignment="center"
+            android:textColor="@color/Black"
+            android:textStyle="normal|bold" />
+
+        <Button
+            android:id="@+id/BtnAddUserAdvertisementList"
+            style="@style/AppTheme.Button.Add"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="50dp"
+            android:onClick="BtnAddAdvertisement"
+            android:padding="10dp"
+            android:text="@string/BtnDialogNewAdvertisement"
+            tools:ignore="OnClick" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/ShowUserAdvertisementList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/transparent"
+        android:dividerHeight="0.5dp"
+        android:scrollbars="vertical"
+
+        ></ListView>
+
+
+</LinearLayout>

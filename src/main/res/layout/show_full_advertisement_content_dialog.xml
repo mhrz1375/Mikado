@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/show_full_advertisement_content_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/InfoCallDialog"
+        android:textColor="@color/Black"
+        android:textSize="14sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/DialogSeller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="اگهی دهنده"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        android:textStyle="normal|bold" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <Button
+            android:id="@+id/DialogCall"
+            style="@style/AppTheme.Button.Call"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="GoToCallPhoneNumber"
+            android:padding="5dp"
+            android:text="تماس"
+            android:textAlignment="center"
+            android:textDirection="rtl"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <Button
+            android:id="@+id/DialogMessage"
+            style="@style/AppTheme.Button.Message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="GoToSendMessage"
+            android:padding="5dp"
+            android:text="پیامک"
+            android:textAlignment="center"
+            android:textDirection="rtl"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <Button
+            android:id="@+id/DialogEmail"
+            style="@style/AppTheme.Button.Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="GoToSendEmail"
+            android:padding="5dp"
+            android:text="ارسال ایمیل"
+            android:textAlignment="center"
+            android:textDirection="rtl"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

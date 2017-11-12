@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Black"
+    android:orientation="vertical"
+
+
+    >
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Black"
+        android:onClick="onLoadImageClick"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="اضافه کردن تصویر"
+        android:textColor="@color/White" />
+
+    <com.theartofdev.edmodo.cropper.CropImageView
+        android:id="@+id/CropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Black"
+        android:onClick="onCropImageClick"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="برش و ذخیره تصویر"
+        android:textColor="@color/White" />
+
+</LinearLayout>

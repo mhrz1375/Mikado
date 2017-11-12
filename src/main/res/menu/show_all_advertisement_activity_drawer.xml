@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/NavUserAccount"
+            android:icon="@drawable/ic_person_outline_white_24dp"
+            android:title="@string/BtnNavAccount" />
+        <item
+            android:id="@+id/NavNewAdvertisement"
+            android:icon="@drawable/ic_playlist_add_black_24dp"
+            android:title="@string/BtnNavNewAdvertisement" />
+        <item
+            android:id="@+id/NavCategory"
+            android:icon="@drawable/ic_playlist_add_check_white_24dp"
+            android:title="@string/BtnNavCategory" />
+
+    </group>
+
+    <item android:title="ارتباطات">
+        <menu>
+            <item
+                android:id="@+id/NavAboutUs"
+                android:icon="@drawable/ic_sms_failed_white_24dp"
+                android:title="@string/BtnNavAboutUs" />
+            <item
+                android:id="@+id/NavRules"
+                android:icon="@drawable/ic_info_outline_black_24dp"
+                android:title="@string/BtnNavRules" />
+            <item
+                android:id="@+id/NavFAQ"
+                android:icon="@drawable/ic_question_answer_black_24dp"
+                android:title="@string/BtnNavFaq" />
+
+        </menu>
+    </item>
+
+</menu>
