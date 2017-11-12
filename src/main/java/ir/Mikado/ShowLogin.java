@@ -1,7 +1,7 @@
 package ir.Mikado;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,7 +27,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -43,48 +42,25 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ShowLogin extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
     public static LinearLayout LinearLayoutHeaderUserProgress;
+    @SuppressLint("StaticFieldLeak")
     public static LinearLayout LinearLayoutNoAdvertisement;
-    public SimpleAdapter myAdapter;
-    private TextView EditTextUserId;
-    private TextView EditTextFirstName;
-    private TextView EditTextLastName;
-    private TextView EditTextPhoneNumber;
-    private TextView EditTextEmail;
-    private TextView EditTextPictureProfile;
-    private TextView EditTextCreatedAt;
-    private Button btnLogout;
-    private Button btnshow;
-    private boolean go_next = false;
+
     private String URLGetUserAdvertisement;
-    private int UserId = 0;
     private List<HashMap<String, Object>> all_ads = new ArrayList<>();
     private ListView ShowUserAdvertisementList;
-    private List<HashMap<String, Object>> all_cat;
-    private ListView lv_cat2;
-    private ListView lv_cat;
-    private ImageView ImageViewPictureProfile;
-    private String FirstName;
-    private String LastName;
-    private String PhoneNumber;
-    private String Email;
-    private String PictureProfile;
-    private String CreatedAt;
-    private ProgressDialog pDialog;
-    private boolean Switch = false;
-    private SQLiteHandler SqliteDataBase;
+    private SQLiteHandler SqlLiteDataBase;
     private SessionManager session;
-    private ListView ListDialogCategory;
-    private RequestQueue requestQueue;
-    private Button BtnRefreshUserAdvertisementList;
     private Button BtnAddUserAdvertisementList;
     private LinearLayout linearLayoutHeaderButtonUserRefresh;
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo[] ni = cm.getAllNetworkInfo();
-        for (int i = 0; i < ni.length; i++) {
-            if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
+        for (NetworkInfo aNi : ni) {
+            if (aNi.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -92,6 +68,7 @@ public class ShowLogin extends AppCompatActivity {
         return false;
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +78,12 @@ public class ShowLogin extends AppCompatActivity {
         setSupportActionBar(toolbar);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_forward_white_24dp));
             setProgressBarIndeterminateVisibility(true);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,17 +96,17 @@ public class ShowLogin extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertMe(getString(R.string.TitleUserLogOut), getString(R.string.MessageUserLogOut), true);
+                AlertMe(getString(R.string.TitleUserLogOut), getString(R.string.MessageUserLogOut));
             }
         });
 
-        ImageViewPictureProfile = findViewById(R.id.ImageViewPictureProfileShowLogin);
+        ImageView imageViewPictureProfile = findViewById(R.id.ImageViewPictureProfileShowLogin);
         ShowUserAdvertisementList = findViewById(R.id.ShowUserAdvertisementList);
 
-        EditTextFirstName = findViewById(R.id.LoginEditTextFirstName);
-        EditTextPhoneNumber = findViewById(R.id.LoginEditTextPhoneNumber);
-        EditTextEmail = findViewById(R.id.LoginEditTextEmail);
-        EditTextCreatedAt = findViewById(R.id.LoginEditTextCreatedAt);
+        TextView editTextFirstName = findViewById(R.id.LoginEditTextFirstName);
+        TextView editTextPhoneNumber = findViewById(R.id.LoginEditTextPhoneNumber);
+        TextView editTextEmail = findViewById(R.id.LoginEditTextEmail);
+        TextView editTextCreatedAt = findViewById(R.id.LoginEditTextCreatedAt);
 
         LinearLayoutHeaderUserProgress = findViewById(R.id.linearLayoutHeaderProgressUserAdvertisement);
 
@@ -141,8 +119,8 @@ public class ShowLogin extends AppCompatActivity {
         linearLayoutHeaderButtonUserRefresh = findViewById(R.id.linearLayoutHeaderButtonRefreshUserAdvertisement);
 
 
-        BtnRefreshUserAdvertisementList = findViewById(R.id.BtnRefreshUserAdvertisementList);
-        BtnRefreshUserAdvertisementList.setOnClickListener(new View.OnClickListener() {
+        Button btnRefreshUserAdvertisementList = findViewById(R.id.BtnRefreshUserAdvertisementList);
+        btnRefreshUserAdvertisementList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 linearLayoutHeaderButtonUserRefresh.setVisibility(View.GONE);
@@ -166,7 +144,7 @@ public class ShowLogin extends AppCompatActivity {
             }
         });
         // SqLite database handler
-        SqliteDataBase = new SQLiteHandler(getApplicationContext());
+        SqlLiteDataBase = new SQLiteHandler(getApplicationContext());
 
         // session manager
         session = new SessionManager(getApplicationContext());
@@ -175,21 +153,21 @@ public class ShowLogin extends AppCompatActivity {
             LogOutUser();
         }
 
-        // Fetching user details from sqlite
-        HashMap<String, String> user = SqliteDataBase.getUserDetails();
-        UserId = Integer.parseInt(user.get("user_id"));
-        FirstName = user.get("first_name");
-        LastName = user.get("last_name");
-        PhoneNumber = user.get("phone_number");
-        Email = user.get("email");
-        PictureProfile = user.get("picture_profile");
-        CreatedAt = user.get("created_at");
+        // Fetching user details from sql lite
+        HashMap<String, String> user = SqlLiteDataBase.getUserDetails();
+        int userId = Integer.parseInt(user.get("user_id"));
+        String firstName = user.get("first_name");
+        String lastName = user.get("last_name");
+        String phoneNumber = user.get("phone_number");
+        String email = user.get("email");
+        String pictureProfile = user.get("picture_profile");
+        String createdAt = user.get("created_at");
 
-        EditTextFirstName.setText(FirstName + " " + LastName);
-        EditTextPhoneNumber.setText(PhoneNumber);
-        EditTextEmail.setText(Email);
-        EditTextCreatedAt.setText(CreatedAt);
-        Picasso.with(getApplicationContext()).load(AppConfig.URL_SITE + PictureProfile).into(ImageViewPictureProfile);
+        editTextFirstName.setText(firstName + " " + lastName);
+        editTextPhoneNumber.setText(phoneNumber);
+        editTextEmail.setText(email);
+        editTextCreatedAt.setText(createdAt);
+        Picasso.with(getApplicationContext()).load(AppConfig.URL_SITE + pictureProfile).into(imageViewPictureProfile);
         ShowUserAdvertisementList.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
@@ -201,7 +179,7 @@ public class ShowLogin extends AppCompatActivity {
                 }
         );
 
-        URLGetUserAdvertisement = AppConfig.URL_GET_DATA_BY_USER_ID + UserId;
+        URLGetUserAdvertisement = AppConfig.URL_GET_DATA_BY_USER_ID + userId;
 
         // Displaying the user details on the screen
 
@@ -211,9 +189,9 @@ public class ShowLogin extends AppCompatActivity {
     }
 
     /// Alert method for ask user to logout
-    public void AlertMe(String title, String body, boolean cancelable) {
+    public void AlertMe(String title, String body) {
         AlertDialog.Builder alert = new AlertDialog.Builder(ShowLogin.this);
-        alert.setCancelable(cancelable);
+        alert.setCancelable(true);
         alert.setTitle(title);
         alert.setMessage(body);
         alert.setPositiveButton(R.string.BtnLogOutUserYes,
@@ -264,11 +242,11 @@ public class ShowLogin extends AppCompatActivity {
 
     /**
      * Logging out the user. Will set isLoggedIn flag to false in shared
-     * preferences Clears the user data from sqlite users table
+     * preferences Clears the user data from sql lite users table
      */
     private void LogOutUser() {
         session.setLogin(false);
-        SqliteDataBase.deleteUsers();
+        SqlLiteDataBase.deleteUsers();
         // Launching the login activity
         Intent intent = new Intent(ShowLogin.this, LoginActivity.class);
         startActivity(intent);
@@ -291,7 +269,7 @@ public class ShowLogin extends AppCompatActivity {
             File[] f = getBaseContext().getCacheDir().listFiles();
 
             for (File file : f) {
-                file.delete();
+                file.deleteOnExit();
             }
         } catch (Exception e) {
 
@@ -303,6 +281,7 @@ public class ShowLogin extends AppCompatActivity {
     public void BtnRefresh(View view) {
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class DownloadTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -328,6 +307,7 @@ public class ShowLogin extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class ListViewLoaderTask extends AsyncTask<String, Void, SimpleAdapter> {
         @Override
         protected SimpleAdapter doInBackground(String... params) {
@@ -343,7 +323,8 @@ public class ShowLogin extends AppCompatActivity {
             int[] to = {R.id.AdvertisementTitle, R.id.AdvertisementIntro, R.id.AdvertisementLocation,
                     R.id.AdvertisementImage, R.id.AdvertisementCreatedAtDate, R.id.AdvertisementCategory};
 
-            SimpleAdapter simpleAdapterUserAdvertisementList = new SimpleAdapter(
+            SimpleAdapter simpleAdapterUserAdvertisementList;
+            simpleAdapterUserAdvertisementList = new SimpleAdapter(
                     getBaseContext(), all_ads, R.layout.advertisement_list, from, to
             );
 
@@ -356,7 +337,7 @@ public class ShowLogin extends AppCompatActivity {
             ShowUserAdvertisementList.setAdapter(adapter);
 
             for (int i = 0; i < adapter.getCount(); i++) {
-                HashMap<String, Object> hashMap =
+                @SuppressWarnings("unchecked") HashMap<String, Object> hashMap =
                         (HashMap<String, Object>) adapter.getItem(i);
 
                 String imgURL = (String) hashMap.get("image_path");
@@ -368,16 +349,19 @@ public class ShowLogin extends AppCompatActivity {
 
                 ShowLogin.ImageDownloaderTask imgDownloader = new ShowLogin.ImageDownloaderTask();
 
+                //noinspection unchecked
                 imgDownloader.execute(forDownload);
             }
 
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class ImageDownloaderTask extends
             AsyncTask<HashMap<String, Object>, Void, HashMap<String, Object>> {
+        @SafeVarargs
         @Override
-        protected HashMap<String, Object> doInBackground(HashMap<String, Object>... params) {
+        protected final HashMap<String, Object> doInBackground(HashMap<String, Object>... params) {
             InputStream myStream;
 
             String imgUrl = (String) params[0].get("image_path");
@@ -433,7 +417,7 @@ public class ShowLogin extends AppCompatActivity {
 
             SimpleAdapter simpleAdapterUserAdvertisementList = (SimpleAdapter) ShowUserAdvertisementList.getAdapter();
 
-            HashMap<String, Object> hashMap = (HashMap<String, Object>) simpleAdapterUserAdvertisementList.getItem(position);
+            @SuppressWarnings("unchecked") HashMap<String, Object> hashMap = (HashMap<String, Object>) simpleAdapterUserAdvertisementList.getItem(position);
 
             hashMap.put("image", image);
             LinearLayoutHeaderUserProgress.setVisibility(View.GONE);

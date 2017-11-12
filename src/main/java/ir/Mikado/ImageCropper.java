@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.system.ErrnoException;
 import android.view.View;
@@ -38,18 +39,21 @@ public class ImageCropper extends AppCompatActivity {
     private Uri mCropImageUri;
     private String imagePath = "";
     private boolean flag;
-    private boolean flagCheck;
+    private boolean flagCheck = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_cropper_activity);
         mCropImageView = findViewById(R.id.CropImageView);
-        /**
-         * On load image button click, start pick  image chooser activity.
+        /* ***
+
+                  * On load image button click, start pick  image chooser activity.
          */
+
         startActivityForResult(getPickImageChooserIntent(), 200);
         Bundle data = getIntent().getExtras();
+        //noinspection ConstantConditions
         flag = data.getBoolean("flag", flagCheck);
 
     }
@@ -62,6 +66,7 @@ public class ImageCropper extends AppCompatActivity {
     public void onLoadImageClick(View view) {
         startActivityForResult(getPickImageChooserIntent(), 200);
         Bundle data = getIntent().getExtras();
+        //noinspection ConstantConditions
         flag = data.getBoolean("flag", flagCheck);
     }
 
@@ -104,7 +109,7 @@ public class ImageCropper extends AppCompatActivity {
         String FileName = "image-" + n + ".jpg";
         File file = new File(myDir, FileName);
         if (file.exists())
-            file.delete();
+            file.deleteOnExit();
         try {
             FileOutputStream out = new FileOutputStream(file);
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -142,7 +147,7 @@ public class ImageCropper extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             mCropImageView.setImageUriAsync(mCropImageUri);
         } else {
@@ -190,6 +195,7 @@ public class ImageCropper extends AppCompatActivity {
 // the main intent is the last in the  list (fucking android) so pickup the useless one
         Intent mainIntent = allIntents.get(allIntents.size() - 1);
         for (Intent intent : allIntents) {
+            //noinspection ConstantConditions
             if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
                 mainIntent = intent;
                 break;
@@ -240,14 +246,16 @@ public class ImageCropper extends AppCompatActivity {
         try {
             ContentResolver resolver = getContentResolver();
             InputStream stream = resolver.openInputStream(uri);
+            //noinspection ConstantConditions
             stream.close();
             return false;
         } catch (FileNotFoundException e) {
             if (e.getCause() instanceof ErrnoException) {
                 return true;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return false;
     }
+
 }

@@ -1,12 +1,11 @@
 package ir.Mikado;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -27,13 +26,12 @@ import android.widget.Toast;
 public class AboutPearl extends AppCompatActivity {
     private LinearLayout linearLayoutHeaderButtonRefresh;
     private LinearLayout LinearLayoutHeaderProgress;
-    private Button BtnRefresh;
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] ni = cm.getAllNetworkInfo();
-        for (int i = 0; i < ni.length; i++) {
-            if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
+        @SuppressWarnings("ConstantConditions") NetworkInfo[] ni = cm.getAllNetworkInfo();
+        for (NetworkInfo aNi : ni) {
+            if (aNi.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -41,6 +39,7 @@ public class AboutPearl extends AppCompatActivity {
         return false;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +49,13 @@ public class AboutPearl extends AppCompatActivity {
         setSupportActionBar(toolbar);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_forward_white_24dp));
             setProgressBarIndeterminateVisibility(true);
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +103,8 @@ public class AboutPearl extends AppCompatActivity {
         LinearLayoutHeaderProgress.setVisibility(View.VISIBLE);
 
         linearLayoutHeaderButtonRefresh = findViewById(R.id.linearLayoutHeaderButtonRefreshAboutPearl);
-        BtnRefresh = findViewById(R.id.BtnRefreshAboutPearl);
-        BtnRefresh.setOnClickListener(new View.OnClickListener() {
+        Button btnRefresh = findViewById(R.id.BtnRefreshAboutPearl);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 linearLayoutHeaderButtonRefresh.setVisibility(View.GONE);
@@ -135,7 +135,7 @@ public class AboutPearl extends AppCompatActivity {
     public void builderSingle(View view) {
 
         final AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 AboutPearl.this,
                 android.R.layout.select_dialog_singlechoice);
         arrayAdapter.add("mhrz.dev@gmail.com");
@@ -152,24 +152,6 @@ public class AboutPearl extends AppCompatActivity {
                     }
                 });
 
-        AlertDialog.Builder builder = builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String strName = arrayAdapter.getItem(which);
-                if (strName.length() > 11) {
-                    try {
-                        Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", strName, null));
-                        startActivity(sendEmailIntent);
-                    } catch (Exception e) {
-
-                    }
-                } else {
-                    Intent sendMessageIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:09394062047"));
-                    startActivity(sendMessageIntent);
-                }
-            }
-
-        });
         builderSingle.show();
 
     }

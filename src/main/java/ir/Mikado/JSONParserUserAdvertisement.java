@@ -1,6 +1,5 @@
 package ir.Mikado;
 
-import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -13,15 +12,12 @@ import java.util.List;
 
 
 /**
- * Created by MHRZ on 2016-12-23.
+ *@author mhrz  Created by MHRZ on 2016-12-23.
  */
 
-public class JSONParserUserAdvertisement {
+class JSONParserUserAdvertisement {
 
-    private final String log_label = "ErrorMessage";
-    public String StringNoThing = "";
-
-    public List<HashMap<String, Object>> parse(String json) throws JSONException {
+    List<HashMap<String, Object>> parse(String json) throws JSONException {
         List<HashMap<String, Object>> all_ads = new ArrayList<>();
 
         try {
@@ -56,7 +52,6 @@ public class JSONParserUserAdvertisement {
         } catch (Exception e) {
 
             ShowLogin.LinearLayoutHeaderUserProgress.setVisibility(View.GONE);
-            Log.i(log_label, "error in AdsUsreParser in parse() ->( " + StringNoThing + ")" + e.toString());
 
         }
         return (all_ads);

@@ -8,11 +8,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class JSONDownloader {
+class JSONDownloader {
 
-    private final String log_label = "ErrorMessage";
-
-    public String DownloadURL(String strUrl) {
+    String DownloadURL(String strUrl) {
 
         String data = "";
 
@@ -54,6 +52,7 @@ public class JSONDownloader {
             connection.disconnect();
             myStream.close();
         } catch (Exception e) {
+            String log_label = "ErrorMessage";
             Log.i(log_label, " Error In JSONDownloader " + e.getMessage());
         }
         return (data);

@@ -38,7 +38,7 @@ public class CategoryList extends AppCompatActivity {
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] ni = cm.getAllNetworkInfo();
+        @SuppressWarnings("ConstantConditions") NetworkInfo[] ni = cm.getAllNetworkInfo();
         for (int i = 0; i < ni.length; i++) {
             if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
                 return true;
@@ -65,6 +65,7 @@ public class CategoryList extends AppCompatActivity {
         setSupportActionBar(toolbar);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_forward_black_24dp));
@@ -104,6 +105,7 @@ public class CategoryList extends AppCompatActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        //noinspection ConstantConditions
                         if (address.getString("Category").equals("true")) {
 
                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(CategoryList.this);
@@ -114,7 +116,8 @@ public class CategoryList extends AppCompatActivity {
                             editor.commit();
 
                             finish();
-                        } else if (address.getString("Category").equals("false")) {
+                        } else //noinspection ConstantConditions
+                            if (address.getString("Category").equals("false")) {
                             Intent i = new Intent(getApplicationContext(), ShowAllAdvertisement.class);
                             i.putExtra("categoryId", AllCategory.get(position).get("id").toString());
                             startActivity(i);

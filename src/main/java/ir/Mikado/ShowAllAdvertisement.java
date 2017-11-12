@@ -1,5 +1,6 @@
 package ir.Mikado;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -48,6 +50,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -59,17 +62,9 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
     public TextView NavDrawerEditTextFirstNameLastName;
     public TextView NavDrawerEditTextEmail;
-    public SimpleAdapter myAdapter;
-    private boolean go_next = false;
-    private String url_ads;
     private int current_page = 0;
     private List<HashMap<String, Object>> AllAdvertisement = new ArrayList<>();
     private ListView lv;
-    private ImageView NavDrawerImageViewPictureProfile;
-    private String UserId;
-    private String FirstName;
-    private String LastName;
-    private String PhoneNumber;
     private String Email;
     private String PictureProfile;
     private String CreatedAt;
@@ -86,11 +81,15 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
     private Button BtnRefreshAdvertisementList;
 
+    public ShowAllAdvertisement() {
+    }
+
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo[] ni = cm.getAllNetworkInfo();
-        for (int i = 0; i < ni.length; i++) {
-            if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
+        for (NetworkInfo aNi : ni) {
+            if (aNi.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -99,6 +98,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
     }
 
 
+    @SuppressLint({"SetTextI18n", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +110,12 @@ public class ShowAllAdvertisement extends AppCompatActivity
         requestQueue = Volley.newRequestQueue(this);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             setProgressBarIndeterminateVisibility(true);
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -153,7 +154,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
         LinearLayoutHeaderProgress.setVisibility(View.VISIBLE);
         NavDrawerEditTextFirstNameLastName = headerView.findViewById(R.id.NavDrawerEditTextFirstNameLastName);
         NavDrawerEditTextEmail = headerView.findViewById(R.id.NavDrawerEditTextEmail);
-        NavDrawerImageViewPictureProfile = headerView.findViewById(R.id.NavDrawerImageViewPictureProfile);
+        ImageView navDrawerImageViewPictureProfile = headerView.findViewById(R.id.NavDrawerImageViewPictureProfile);
 
 
         linearLayoutHeaderButtonRefresh = findViewById(R.id.linearLayoutHeaderButtonRefreshAdsList);
@@ -174,18 +175,18 @@ public class ShowAllAdvertisement extends AppCompatActivity
         session = new SessionManager(getApplicationContext());
 
 
-        // Fetching user details from sqlite
+        // Fetching user details from Sql lite
         HashMap<String, String> user = db.getUserDetails();
-        UserId = user.get("user_id");
-        FirstName = user.get("first_name");
-        LastName = user.get("last_name");
-        PhoneNumber = user.get("phone_number");
+        String userId = user.get("user_id");
+        String firstName = user.get("first_name");
+        String lastName = user.get("last_name");
+        String phoneNumber = user.get("phone_number");
         Email = user.get("email");
         PictureProfile = user.get("picture_profile");
         CreatedAt = user.get("created_at");
 
         if (session.isLoggedIn()) {
-            NavDrawerEditTextFirstNameLastName.setText(FirstName + " " + LastName, TextView.BufferType.EDITABLE);
+            NavDrawerEditTextFirstNameLastName.setText(firstName + " " + lastName, TextView.BufferType.EDITABLE);
             NavDrawerEditTextEmail.setText(Email, TextView.BufferType.EDITABLE);
         } else {
             NavDrawerEditTextFirstNameLastName.setText("کاربر مهمان", TextView.BufferType.EDITABLE);
@@ -193,13 +194,14 @@ public class ShowAllAdvertisement extends AppCompatActivity
         }
 
 
-        Picasso.with(getApplicationContext()).load(AppConfig.URL_SITE + PictureProfile).into(NavDrawerImageViewPictureProfile);
+        Picasso.with(getApplicationContext()).load(AppConfig.URL_SITE + PictureProfile).into(navDrawerImageViewPictureProfile);
 
 
         Bundle address = getIntent().getExtras();
 
 
-        if (address.getString("categoryId").equals("aaa")) {
+        assert address != null;
+        if (Objects.equals(address.getString("categoryId"), "aaa")) {
 
             MakeAllAdvertisementList();
 
@@ -301,7 +303,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -387,7 +389,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
     public void builderSingle() {
 
         final AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 ShowAllAdvertisement.this,
                 android.R.layout.select_dialog_singlechoice);
         arrayAdapter.add("mhrz.dev@gmail.com");
@@ -407,11 +409,12 @@ public class ShowAllAdvertisement extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
+                assert strName != null;
                 if (strName.length() > 11) {
                     try {
-                        Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", strName, null));
+                        Intent sendEmailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mail to", strName, null));
                         startActivity(sendEmailIntent);
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
 
                     }
                 } else {
@@ -425,6 +428,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class DownloadTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -452,6 +456,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class ListViewLoaderTask extends AsyncTask<String, Void, SimpleAdapter> {
         @Override
         protected SimpleAdapter doInBackground(String... params) {
@@ -470,11 +475,9 @@ public class ShowAllAdvertisement extends AppCompatActivity
             int[] to = {R.id.AdvertisementTitle, R.id.AdvertisementIntro, R.id.AdvertisementLocation,
                     R.id.AdvertisementImage, R.id.AdvertisementCreatedAtDate, R.id.AdvertisementCategory};
 
-            SimpleAdapter adb = new SimpleAdapter(
+            return new SimpleAdapter(
                     getBaseContext(), AllAdvertisement, R.layout.advertisement_list, from, to
             );
-
-            return adb;
 
         }
 
@@ -482,8 +485,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
         protected void onPostExecute(SimpleAdapter adapter) {
 
             for (int i = 0; i < adapter.getCount(); i++) {
-                HashMap<String, Object> hm =
-                        (HashMap<String, Object>) adapter.getItem(i);
+                @SuppressWarnings("unchecked") HashMap<String, Object> hm = (HashMap<String, Object>) adapter.getItem(i);
 
                 String imgURL = (String) hm.get("image_path");
 
@@ -494,6 +496,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
                 ImageDownloaderTask imgDownloader = new ImageDownloaderTask();
 
+                //noinspection unchecked
                 imgDownloader.execute(forDownload);
             }
             lv.setAdapter(adapter);
@@ -504,6 +507,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
 
     // show The Image in a ImageView
+    @SuppressLint("StaticFieldLeak")
     private class ImageDownloaderTask extends
             AsyncTask<HashMap<String, Object>, Void, HashMap<String, Object>> {
         @Override
@@ -563,7 +567,7 @@ public class ShowAllAdvertisement extends AppCompatActivity
 
                 SimpleAdapter adb = (SimpleAdapter) lv.getAdapter();
 
-                HashMap<String, Object> hm = (HashMap<String, Object>) adb.getItem(position);
+                @SuppressWarnings("unchecked") HashMap<String, Object> hm = (HashMap<String, Object>) adb.getItem(position);
 
                 hm.put("image", image);
 

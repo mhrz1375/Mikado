@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] ni = cm.getAllNetworkInfo();
+        @SuppressWarnings("ConstantConditions") NetworkInfo[] ni = cm.getAllNetworkInfo();
         for (int i = 0; i < ni.length; i++) {
             if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
                 return true;
@@ -186,6 +186,7 @@ public class LoginActivity extends Activity {
         try {
             Bundle UserAndPass;
             UserAndPass = getIntent().getExtras();
+            //noinspection ConstantConditions
             User = UserAndPass.getString("user");
             Pass = UserAndPass.getString("pass");
             inputEmail.setText(User, TextView.BufferType.EDITABLE);

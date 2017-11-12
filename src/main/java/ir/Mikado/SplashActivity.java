@@ -17,9 +17,9 @@ public class SplashActivity extends Activity {
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] ni = cm.getAllNetworkInfo();
-        for (int i = 0; i < ni.length; i++) {
-            if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
+        @SuppressWarnings("ConstantConditions") NetworkInfo[] ni = cm.getAllNetworkInfo();
+        for (NetworkInfo aNi : ni) {
+            if (aNi.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -41,7 +41,7 @@ public class SplashActivity extends Activity {
 
     @Override
     protected void onResume() {
-        /****** Create Thread that will sleep for 5 seconds *************/
+        //**** Create Thread that will sleep for 5 seconds *************/
         Thread background = new Thread() {
             public void run() {
 
@@ -58,17 +58,17 @@ public class SplashActivity extends Activity {
                     //Remove activity
                     finish();
 
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }
         };
-        if (isConnected() == true) {
+        if (isConnected()) {
 
             background.start();
 
         } else {
-            AlertMe(getString(R.string.InternetErrorTitle), getString(R.string.InternetErrorMessage), true);
+            AlertMe(getString(R.string.InternetErrorTitle), getString(R.string.InternetErrorMessage));
 
         }
         super.onResume();
@@ -84,9 +84,9 @@ public class SplashActivity extends Activity {
         super.onPause();
     }
 
-    public void AlertMe(String title, String body, boolean cancelable) {
+    public void AlertMe(String title, String body) {
         AlertDialog.Builder alert = new AlertDialog.Builder(SplashActivity.this);
-        alert.setCancelable(cancelable);
+        alert.setCancelable(true);
         alert.setTitle(title);
         alert.setMessage(body);
         alert.setPositiveButton(R.string.BtnOpenNetWorkSetting,

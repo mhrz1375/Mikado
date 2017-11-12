@@ -81,6 +81,7 @@ public class InsertAdvertisement extends AppCompatActivity {
         setSupportActionBar(toolbar);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_forward_white_24dp));
@@ -128,6 +129,7 @@ public class InsertAdvertisement extends AppCompatActivity {
             if (ImagePath != null) {
                 Bundle ProfilePicture;
                 ProfilePicture = getIntent().getExtras();
+                //noinspection ConstantConditions
                 ImagePath = ProfilePicture.getString("imagePath");
                 OpenImageFromFilePath(ImagePath);
 
@@ -199,6 +201,7 @@ public class InsertAdvertisement extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(),
                 ImageCropper.class);
         flagCheck = true;
+        //noinspection ConstantConditions
         i.putExtra("flag", flagCheck);
         startActivity(i);
     }

@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class JSONParserCategory {
-    private final String log_label = "ErrorMessage";
+class JSONParserCategory {
 
 
-    public List<HashMap<String, Object>> parse(String json) {
+    List<HashMap<String, Object>> parse(String json) {
         List<HashMap<String, Object>> all_cats =
                 new ArrayList<>();
 
@@ -38,6 +37,7 @@ public class JSONParserCategory {
         } catch (Exception e) {
 
 
+            String log_label = "ErrorMessage";
             Log.i(log_label, "error in CatParser in parser() -> " + e.toString());
 
         }

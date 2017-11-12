@@ -193,7 +193,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:text="@string/BtnLinkToLogin"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/BtnRegister"
@@ -202,6 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:onClick="BtnRegister"
                     android:padding="5dp"
@@ -218,7 +220,7 @@
                 android:background="@color/transparent"
                 android:text="@string/BtnLinkToLogin"
                 android:textColor="@color/YellowLight"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 

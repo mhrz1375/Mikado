@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] ni = cm.getAllNetworkInfo();
+        @SuppressWarnings("ConstantConditions") NetworkInfo[] ni = cm.getAllNetworkInfo();
         for (int i = 0; i < ni.length; i++) {
             if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
                 return true;
@@ -151,6 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_forward_white_24dp));
@@ -237,6 +238,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (ImagePath != null) {
                 Bundle ProfilePicture;
                 ProfilePicture = getIntent().getExtras();
+                //noinspection ConstantConditions
                 ImagePath = ProfilePicture.getString("imagePath");
                 OpenImageFromFilePath(ImagePath);
 

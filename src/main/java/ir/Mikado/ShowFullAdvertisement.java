@@ -51,6 +51,7 @@ public class ShowFullAdvertisement extends AppCompatActivity {
         setSupportActionBar(toolbar);
         try {
             getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_forward_white_24dp));
@@ -75,7 +76,7 @@ public class ShowFullAdvertisement extends AppCompatActivity {
         setTitle("آگهی ها");
         Bundle data = getIntent().getExtras();
 
-        HashMap<String, Object> hm =
+        @SuppressWarnings({"unchecked", "ConstantConditions"}) HashMap<String, Object> hm =
                 (HashMap<String, Object>) data.get("ads");
 
         FullAdsImage = findViewById(R.id.FullAdsImage);
@@ -88,14 +89,14 @@ public class ShowFullAdvertisement extends AppCompatActivity {
         boolean flag;
 
         try {
-            double t = Double.parseDouble(hm.get("image").toString());
+            @SuppressWarnings("ConstantConditions") double t = Double.parseDouble(hm.get("image").toString());
             flag = true;
         } catch (Exception e) {
             flag = false;
         }
 
         if (flag == false) {
-            File imgFile = new File(hm.get("image").toString());
+            @SuppressWarnings("ConstantConditions") File imgFile = new File(hm.get("image").toString());
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 FullAdsImage.setImageBitmap(myBitmap);
@@ -172,7 +173,7 @@ public class ShowFullAdvertisement extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater)
                     this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-            View layout = inflater.inflate(R.layout.show_full_advertisement_content_dialog,
+            @SuppressWarnings("ConstantConditions") View layout = inflater.inflate(R.layout.show_full_advertisement_content_dialog,
                     (ViewGroup) findViewById(R.id.show_full_advertisement_content_dialog));
             TextDialogSeller = layout.findViewById(R.id.DialogSeller);
             TextDialogSeller.setText("آگهی دهنده: " + TextSeller);

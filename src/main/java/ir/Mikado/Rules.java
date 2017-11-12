@@ -1,5 +1,6 @@
 package ir.Mikado;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -20,13 +21,12 @@ public class Rules extends AppCompatActivity {
 
     private LinearLayout linearLayoutHeaderButtonRefresh;
     private LinearLayout LinearLayoutHeaderProgress;
-    private Button BtnRefresh;
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] ni = cm.getAllNetworkInfo();
-        for (int i = 0; i < ni.length; i++) {
-            if (ni[i].getState() == NetworkInfo.State.CONNECTED) {
+        @SuppressWarnings("ConstantConditions") NetworkInfo[] ni = cm.getAllNetworkInfo();
+        for (NetworkInfo aNi : ni) {
+            if (aNi.getState() == NetworkInfo.State.CONNECTED) {
                 return true;
             }
         }
@@ -40,6 +40,7 @@ public class Rules extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +74,8 @@ public class Rules extends AppCompatActivity {
         LinearLayoutHeaderProgress.setVisibility(View.VISIBLE);
 
         linearLayoutHeaderButtonRefresh = findViewById(R.id.linearLayoutHeaderButtonRefreshRules);
-        BtnRefresh = findViewById(R.id.BtnRefreshRules);
-        BtnRefresh.setOnClickListener(new View.OnClickListener() {
+        Button btnRefresh = findViewById(R.id.BtnRefreshRules);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 linearLayoutHeaderButtonRefresh.setVisibility(View.GONE);

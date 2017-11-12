@@ -107,7 +107,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
 
-        File imgFile = new File(data.getString("StringFullImage", StringFullImage));
+        @SuppressWarnings("ConstantConditions") File imgFile = new File(data.getString("StringFullImage", StringFullImage));
         if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             mContentView.setImageBitmap(myBitmap);

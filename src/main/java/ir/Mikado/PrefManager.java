@@ -1,33 +1,32 @@
 package ir.Mikado;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by MHRZ on 2016/12/20.
+ *@author mhrz  Created by MHRZ on 2016/12/20.
  */
-public class PrefManager {
+class PrefManager {
     // Shared preferences file name
-    private static final String PREF_NAME = "androidhive-welcome";
+    private static final String PREF_NAME = "mikado-welcome";
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    Context _context;
-    // shared pref mode
-    int PRIVATE_MODE = 0;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
-    public PrefManager(Context context) {
-        this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+    @SuppressLint("CommitPrefEdits")
+    PrefManager(Context context) {
+        int PRIVATE_MODE = 0;
+        pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
 
-    public boolean isFirstTimeLaunch() {
+    boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 
-    public void setFirstTimeLaunch(boolean isFirstTime) {
-        editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
+    void setFirstTimeLaunch() {
+        editor.putBoolean(IS_FIRST_TIME_LAUNCH, false);
         editor.commit();
     }
 
